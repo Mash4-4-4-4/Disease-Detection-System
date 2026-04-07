@@ -5,3 +5,4 @@ scikit-learn
 pymongo
 certifi
 python-dotenv
+reportlab
