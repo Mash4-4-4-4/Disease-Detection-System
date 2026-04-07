@@ -1,0 +1,259 @@
+/* -----------------------------------------
+   GLOBAL RESET + BASE UI
+------------------------------------------*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EAFBFF;
+  overflow-x: hidden;
+}
+
+/* -----------------------------------------
+   FROSTED GLASS CARD
+------------------------------------------*/
+.card-glass {
+  width: 90%;
+  max-width: 620px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 22px;
+  padding: 32px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  animation: fadeUp 0.75s ease-out;
+}
+
+/* -----------------------------------------
+   HEADER ROW
+------------------------------------------*/
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* Doctors Button */
+.header-btn {
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 10px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #EAFBFF;
+  transition: .25s ease;
+}
+
+.header-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0,255,255,0.6);
+}
+
+/* -----------------------------------------
+   FORM GRID
+------------------------------------------*/
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.form-grid label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+.form-grid input {
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  outline: none;
+  transition: .2s;
+}
+
+.form-grid input:focus {
+  background: rgba(255,255,255,0.32);
+  transform: scale(1.03);
+}
+
+/* Submit Button */
+.submit-btn {
+  grid-column: 1 / -1;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background: #00E0FF;
+  color: #002835;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: .25s ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* -----------------------------------------
+   RESULT BOX
+------------------------------------------*/
+.result-box {
+  margin-top: 18px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ok-dot { color: #3ddc84; }
+.danger-dot { color: #ff6b6b; }
+
+.prob-text { opacity: 0.75; font-size: 0.9rem; }
+
+.advice-text {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.ok-text { color: #3ddc84; }
+.danger-text { color: #ff6b6b; }
+
+/* Report Button */
+.report-btn {
+  display: inline-block;
+  margin-top: 14px;
+  background: #00E0FF;
+  color: #002835;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .25s ease;
+}
+
+.report-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.35);
+}
+
+/* -----------------------------------------
+   SIDEBAR + OVERLAY
+------------------------------------------*/
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s ease;
+  z-index: 999;
+}
+.overlay.show { opacity: 1; pointer-events: auto; }
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  height: 100vh;
+  width: 330px;
+  background: rgba(255,255,255,0.1);
+  border-left: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(15px);
+  transition: right 0.32s ease;
+  padding: 18px;
+  z-index: 1000;
+}
+.sidebar.open { right: 0; }
+
+.sidebar-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.sidebar-top h3 { font-size: 1.1rem; font-weight: 700; }
+
+.close-btn {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Doctor List */
+.doctor-list {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: calc(100vh - 70px);
+}
+
+.doctor-card {
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  padding: 12px;
+}
+.doctor-card h4 { font-size: 1rem; font-weight: 700; }
+.doctor-card p { font-size: 0.85rem; opacity: 0.9; margin: 3px 0; }
+
+.book-btn {
+  margin-top: 8px;
+  width: 100%;
+  background: #00E0FF;
+  color: #00333e;
+  border: none;
+  padding: 8px 10px;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .2s;
+}
+.book-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
+
+/* -----------------------------------------
+   ANIMATION
+------------------------------------------*/
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(25px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mobile Fix */
+@media (max-width: 620px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .card-glass { padding: 24px; }
+}

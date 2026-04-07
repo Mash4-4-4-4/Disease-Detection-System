@@ -1,0 +1,166 @@
+/* Reset and base setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', Arial, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Background */
+body {
+  background: linear-gradient(135deg, #e0f7fa, #e1bee7);
+  color: #222;
+  line-height: 1.6;
+}
+
+/* NAVBAR */
+nav {
+  width: 100%;
+  background: rgba(25, 25, 112, 0.95);
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #00e5ff;
+  transform: scale(1.1);
+}
+
+/* MAIN CONTAINER */
+.container {
+  max-width: 1000px;
+  margin: 60px auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* HEADER TEXT */
+.container h1 {
+  font-size: 3rem;
+  color: #1a237e;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.container h4 {
+  color: #444;
+  font-weight: 500;
+  margin: 10px 0;
+}
+
+/* BUTTON */
+.btn button {
+  background: linear-gradient(135deg, #43cea2, #185a9d);
+  border: none;
+  padding: 15px 40px;
+  border-radius: 30px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(24, 90, 157, 0.4);
+}
+
+/* SECTIONS */
+.about, .how, .features, .security, .contact {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  margin-top: 50px;
+  text-align: left;
+}
+
+/* HEADINGS */
+.about h2, .how h3, .features h2, .security h2, .contact h2 {
+  text-align: center;
+  color: #1a237e;
+  margin-bottom: 20px;
+  font-size: 26px;
+  text-transform: uppercase;
+}
+
+/* PARAGRAPHS */
+.about p, .security p, .contact p {
+  font-size: 16px;
+  color: #333;
+  text-align: justify;
+}
+
+/* LISTS */
+.how ol, .features ul {
+  margin-left: 40px;
+  color: #333;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.how li::marker {
+  color: #185a9d;
+  font-weight: bold;
+}
+
+/* CONTACT SECTION */
+.contact {
+  text-align: center;
+}
+
+.contact label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #1a237e;
+}
+
+.contact a {
+  color: #00bcd4;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contact a:hover {
+  color: #185a9d;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  nav {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .container h1 {
+    font-size: 2rem;
+  }
+
+  .btn button {
+    width: 80%;
+  }
+
+  .about, .how, .features, .security, .contact {
+    margin: 25px 10px;
+    padding: 20px;
+  }
+}
+

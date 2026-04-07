@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MediScanAI – Disease Detection System</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <!-- FontAwesome (icons) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+  <!-- AOS (scroll animations) -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet"/>
+
+  <!-- Your theme CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+
+  <style>
+
+    body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+}
+
+p, small, span, label, li {
+  color: var(--color-text-muted);
+}
+
+.navbar, footer {
+  background-color: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.nav-link {
+  color: var(--color-text-muted);
+  transition: color 0.3s;
+}
+.nav-link:hover, .nav-link.active {
+  color: var(--color-primary);
+}
+
+.card {
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.bg-light {
+  background-color: var(--color-bg-alt) !important;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-outline-secondary {
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+.btn-outline-secondary:hover {
+  background-color: var(--color-border);
+}
+
+#hero {
+  background: var(--color-gradient);
+  color: #fff;
+}
+
+footer {
+  color: var(--color-text-muted);
+}
+
+
+    /* Extra spacing so page scrolls nicely */
+    .section-title { margin-bottom: 1rem; }
+    .subtext { max-width: 900px; margin: 0 auto 2rem; }
+    .card-icon { font-size: 2rem; color: var(--primary); }
+    .rounded-xxl { border-radius: 1.5rem; }
+
+    /* Hero */
+    #hero {
+      min-height: 100vh;
+      background: var(--gradient);
+      color: #fff;
+      padding-top: 90px; /* offset for fixed navbar */
+      display: flex; align-items: center;
+    }
+    .hero-illust { max-width: 560px; width: 100%; }
+
+    /* Gallery imgs */
+    .gallery-img { width: 100%; height: 220px; object-fit: cover; border-radius: 10px; }
+
+    /* Testimonials */
+    .quote { font-style: italic; }
+
+   
+
+    /* Sticky navbar shadow on scroll */
+    .navbar-shadow { box-shadow: 0 4px 18px rgba(0,0,0,.08); }
+
+    :root {
+  /* Light mode (default) */
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8f9fa;
+  --color-text: #212529;
+  --color-text-muted: #6c757d;
+  --color-card: #ffffff;
+  --color-border: #dee2e6;
+  --color-primary: #0d6efd;
+  --color-secondary: #6610f2;
+  --color-gradient: linear-gradient(135deg, #0d6efd, #6610f2);
+}
+
+[data-theme="dark"] {
+  --color-bg: #0d1117;
+  --color-bg-alt: #161b22;
+  --color-text: #e6edf3;
+  --color-text-muted: #8b949e;
+  --color-card: #1c2128;
+  --color-border: #30363d;
+  --color-primary: #58a6ff;
+  --color-secondary: #1f6feb;
+  --color-gradient: linear-gradient(135deg, #1f6feb, #58a6ff);
+}
+
+
+  </style>
+</head>
+
+<body data-theme="light">
+  <!-- NAVBAR -->
+<nav id="topnav" class="navbar navbar-expand-lg bg-white fixed-top">
+  <div class="container">
+
+    <a class="navbar-brand fw-bold" href="#hero" style="color: var(--secondary);">
+      <i class="fa-solid fa-heart-pulse me-2"></i>MediScanAI
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="nav" class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+
+        <li class="nav-item"><a class="nav-link" href="#hero"><i class="fa-solid fa-house me-1"></i>Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#about"><i class="fa-solid fa-circle-info me-1"></i>About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#why"><i class="fa-solid fa-star me-1"></i>Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#diseases"><i class="fa-solid fa-virus-covid me-1"></i>Diseases</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact"><i class="fa-solid fa-envelope me-1"></i>Contact</a></li>
+
+        {% if session.get('user_email') %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><i class="fa-solid fa-door-open me-1"></i>Logout</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login_page') }}"><i class="fa-solid fa-right-to-bracket me-1"></i>Login</a></li>
+        {% endif %}
+
+        <!-- Dark Mode Toggle -->
+        <li class="nav-item ms-lg-2">
+          <button id="modeToggle" class="btn btn-outline-secondary" type="button">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- HERO -->
+  <header id="hero">
+    <div class="container">
+      <div class="row align-items-center gy-4 flex-lg-row flex-column-reverse">
+        <div class="col-lg-6 text-center text-lg-start" data-aos="fade-up">
+          <h1 class="fw-bold display-5">Early Disease Detection with AI</h1>
+          <p class="lead mt-2">Predict health risks in seconds. Take action early with data-driven insights.</p>
+          <div class="d-flex gap-2 justify-content-center justify-content-lg-start mt-3">
+            <a class="btn btn-light btn-lg"
+               href="{{ url_for('predict_page') if session.get('user_email') else url_for('login_page') }}">
+              Start Prediction
+            </a>
+            <a class="btn btn-outline-light btn-lg" href="#about">Learn More</a>
+          </div>
+        </div>
+        <div class="col-lg-6 text-center" data-aos="fade-left">
+          <!-- Placeholder illustration (replace with your own image URL) -->
+          <img class="hero-illust rounded-xxl shadow"
+               src="https://picsum.photos/seed/mediscanai-hero/900/600"
+               alt="Medical AI Illustration" />
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section id="about" class="bg-white">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold section-title">What is MediScanAI?</h2>
+        <p class="subtext text-muted">
+          MediScanAI is a machine-learning powered assistant that analyzes your medical inputs and returns
+          predictions instantly. Secure, private, and designed with a medical-grade UI.
+        </p>
+      </div>
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-6" data-aos="fade-right">
+          <img class="img-fluid rounded-xxl shadow" src="https://picsum.photos/seed/health-about/900/600" alt="About illustration"/>
+        </div>
+        <div class="col-lg-6" data-aos="fade-up">
+          <h5 class="mb-3"><i class="fa-solid fa-shield-halved me-2 text-primary"></i>Privacy First</h5>
+          <p class="text-muted">Your data stays encrypted. We never sell or share your information.</p>
+          <h5 class="mb-3"><i class="fa-solid fa-microchip me-2 text-primary"></i>Proven Models</h5>
+          <p class="text-muted">Trained on established datasets and tested for real-world performance.</p>
+          <h5 class="mb-3"><i class="fa-solid fa-gauge-high me-2 text-primary"></i>Real-time Results</h5>
+          <p class="text-muted">Get a result in seconds and next-step guidance.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY MEDISCANAI -->
+  <section id="why" class="bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">Why Choose MediScanAI?</h2>
+        <p class="subtext text-muted">A reliable companion for preventive healthcare and rapid triage.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-3" data-aos="zoom-in">
+          <div class="card h-100 rounded-xxl p-3">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-user-doctor card-icon mb-3"></i>
+              <h5>Clinically Inspired</h5>
+              <p class="text-muted">Built with advice from medical practitioners and data specialists.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+          <div class="card h-100 rounded-xxl p-3">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-lock card-icon mb-3"></i>
+              <h5>Secure by Design</h5>
+              <p class="text-muted">Encryption in-transit and secure storage practices.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card h-100 rounded-xxl p-3">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-bolt card-icon mb-3"></i>
+              <h5>Instant Results</h5>
+              <p class="text-muted">No waiting rooms. Predictions in under five seconds.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card h-100 rounded-xxl p-3">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-thumbs-up card-icon mb-3"></i>
+              <h5>Clear Guidance</h5>
+              <p class="text-muted">Understandable results with next steps to act on quickly.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="bg-white">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">How It Works</h2>
+        <p class="subtext text-muted">Four simple steps to a smarter health check.</p>
+      </div>
+
+      <div class="row g-4 text-center">
+        <div class="col-md-3" data-aos="fade-up"><i class="fa-solid fa-user-pen fa-2x text-primary mb-3"></i><h6>1. Enter Details</h6><p class="text-muted">Provide basic medical inputs.</p></div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-dna fa-2x text-primary mb-3"></i><h6>2. AI Analysis</h6><p class="text-muted">Model processes your data.</p></div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-microscope fa-2x text-primary mb-3"></i><h6>3. Prediction</h6><p class="text-muted">Get the result instantly.</p></div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300"><i class="fa-solid fa-stethoscope fa-2x text-primary mb-3"></i><h6>4. Next Steps</h6><p class="text-muted">Follow guidance or consult a doctor.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE STATS -->
+  <section id="stats" class="bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">Live Stats</h2>
+        <p class="subtext text-muted">Growing every day as more people use MediScanAI.</p>
+      </div>
+
+      <div class="row g-4 text-center">
+        <div class="col-6 col-lg-3" data-aos="zoom-in">
+          <div class="card rounded-xxl p-4">
+            <h3 class="fw-bold"><span class="counter" data-target="1245">0</span>+</h3>
+            <span class="text-muted">Registered Users</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100">
+          <div class="card rounded-xxl p-4">
+            <h3 class="fw-bold"><span class="counter" data-target="8420">0</span>+</h3>
+            <span class="text-muted">Predictions Made</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200">
+          <div class="card rounded-xxl p-4">
+            <h3 class="fw-bold"><span class="counter" data-target="93">0</span>%</h3>
+            <span class="text-muted">Avg. Accuracy</span>
+          </div>
+        </div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300">
+          <div class="card rounded-xxl p-4">
+            <h3 class="fw-bold"><span class="counter" data-target="5">0</span>s</h3>
+            <span class="text-muted">Avg. Response Time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISEASES -->
+  <section id="diseases" class="bg-white">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">Supported & Upcoming Diseases</h2>
+        <p class="subtext text-muted">We’re expanding the catalog rapidly.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-3" data-aos="fade-up">
+          <div class="card h-100 rounded-xxl p-3">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-syringe card-icon mb-3"></i>
+              <h5>Diabetes</h5>
+              <p class="text-muted">Fully supported with high accuracy.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="card h-100 rounded-xxl p-3 opacity-75">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-heart-circle-exclamation card-icon mb-3"></i>
+              <h5>Heart Disease</h5>
+              <p class="text-muted"><i class="fa-solid fa-lock me-1"></i>Coming soon</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="card h-100 rounded-xxl p-3 opacity-75">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-kidneys card-icon mb-3"></i>
+              <h5>Kidney Disease</h5>
+              <p class="text-muted"><i class="fa-solid fa-lock me-1"></i>Coming soon</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="card h-100 rounded-xxl p-3 opacity-75">
+            <div class="card-body text-center">
+              <i class="fa-solid fa-brain card-icon mb-3"></i>
+              <h5>Brain Tumor</h5>
+              <p class="text-muted"><i class="fa-solid fa-lock me-1"></i>Coming soon</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY / SCREENSHOTS -->
+  <section id="gallery" class="bg-light">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">Screenshots</h2>
+        <p class="subtext text-muted">A quick look at the interface.</p>
+      </div>
+      <div class="row g-3">
+        <div class="col-6 col-lg-3" data-aos="zoom-in"><img class="gallery-img" src="https://picsum.photos/seed/med1/800/600" alt="UI 1"/></div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="100"><img class="gallery-img" src="https://picsum.photos/seed/med2/800/600" alt="UI 2"/></div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="200"><img class="gallery-img" src="https://picsum.photos/seed/med3/800/600" alt="UI 3"/></div>
+        <div class="col-6 col-lg-3" data-aos="zoom-in" data-aos-delay="300"><img class="gallery-img" src="https://picsum.photos/seed/med4/800/600" alt="UI 4"/></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="bg-white">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold section-title">What Users Say</h2>
+        <p class="subtext text-muted">Early feedback from real people.</p>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up">
+          <div class="card h-100 rounded-xxl p-4">
+            <p class="quote">“This helped me quickly assess my risk and talk to my doctor.”</p>
+            <div class="mt-3 text-muted">— Aditi, Pune</div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="card h-100 rounded-xxl p-4">
+            <p class="quote">“Clean UI, fast results. I love the guidance after prediction.”</p>
+            <div class="mt-3 text-muted">— Rohan, Delhi</div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="card h-100 rounded-xxl p-4">
+            <p class="quote">“Exactly what I needed for quick self-checks.”</p>
+            <div class="mt-3 text-muted">— Meera, Bengaluru</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="bg-light">
+    <div class="container">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold section-title">Get in Touch</h2>
+        <p class="subtext text-muted">Have a question? We’re happy to help.</p>
+      </div>
+
+      <div class="row gy-4">
+        <div class="col-lg-6" data-aos="fade-right">
+          <form class="card rounded-xxl p-4 shadow-sm">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input class="form-control" type="text" placeholder="Your Name"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input class="form-control" type="email" placeholder="you@example.com"/>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Message</label>
+              <textarea class="form-control" rows="4" placeholder="How can we help?"></textarea>
+            </div>
+            <button class="btn btn-primary" type="button"><i class="fa-solid fa-paper-plane me-2"></i>Send</button>
+          </form>
+        </div>
+        <div class="col-lg-6" data-aos="fade-left">
+          <div class="card rounded-xxl p-4 h-100">
+            <h5 class="mb-3"><i class="fa-solid fa-headset me-2 text-primary"></i>Contact Info</h5>
+            <p><i class="fa-solid fa-envelope me-2"></i>support@mediscanai.com</p>
+            <p><i class="fa-solid fa-phone me-2"></i>+91 9876543210</p>
+            <p><i class="fa-solid fa-location-dot me-2"></i>India</p>
+            <div class="ratio ratio-16x9 mt-3">
+              <!-- Map placeholder / image -->
+              <img class="rounded" src="https://picsum.photos/seed/map/1200/675" alt="Map placeholder">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center py-4 bg-white">
+    <small>© 2025 MediScanAI. All rights reserved.</small>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+  <script>
+    // AOS init
+    AOS.init({ once: true, duration: 700, easing: 'ease-out' });
+
+    // Smooth-scroll active link highlight + navbar shadow
+    const sections = document.querySelectorAll("section, header#hero");
+    const navLinks = document.querySelectorAll(".nav-link[href^='#']");
+    const nav = document.getElementById('topnav');
+
+    function onScroll() {
+      let fromTop = window.scrollY + 100;
+      sections.forEach(sec => {
+        if (sec.offsetTop <= fromTop && (sec.offsetTop + sec.offsetHeight) > fromTop) {
+          navLinks.forEach(l => l.classList.remove("active"));
+          const link = document.querySelector(`.nav-link[href="#${sec.id}"]`);
+          if (link) link.classList.add("active");
+        }
+      });
+      // shadow
+      if (window.scrollY > 5) nav.classList.add('navbar-shadow');
+      else nav.classList.remove('navbar-shadow');
+    }
+    document.addEventListener("scroll", onScroll);
+
+    // Animated counters
+    const counters = document.querySelectorAll('.counter');
+    const speed = 200; // bigger = slower
+    const runCounter = (el) => {
+      const target = +el.getAttribute('data-target');
+      const count = +el.innerText.replace(/\D/g, '') || 0;
+      const inc = Math.ceil(target / speed);
+      if (count < target) {
+        el.innerText = count + inc;
+        requestAnimationFrame(() => runCounter(el));
+      } else {
+        el.innerText = target;
+      }
+    };
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          counters.forEach(c => runCounter(c));
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    const stats = document.getElementById('stats');
+    if (stats) observer.observe(stats);
+
+    // Dark mode toggle
+    const modeToggle = document.getElementById('modeToggle');
+    const root = document.body;
+    function setTheme(theme) {
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('mediscanai-theme', theme);
+      modeToggle.innerHTML = theme === 'dark'
+        ? '<i class="fa-solid fa-sun"></i>'
+        : '<i class="fa-solid fa-moon"></i>';
+    }
+    // init from storage
+    setTheme(localStorage.getItem('mediscanai-theme') || 'light');
+    modeToggle.addEventListener('click', () => {
+      setTheme(root.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+
+    // Smooth in-page scrolling (prevent jump)
+    document.querySelectorAll('a.nav-link[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

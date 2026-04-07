@@ -1,0 +1,218 @@
+/* ───────────────────────────────────────────────
+   GLOBAL THEME COLORS (LIGHT MODE)
+───────────────────────────────────────────────── */
+:root {
+    --primary: #2EC4B6;           /* Mint Teal */
+    --secondary: #0077FF;         /* Royal Blue */
+    --accent: #59E4D6;            /* Light Mint */
+    --dark-text: #1B2D36;         /* Deep Blue-Gray */
+    --light-bg: #F8FEFF;
+    --gradient: linear-gradient(135deg, #0077FF, #2EC4B6);
+
+    --button-glow: rgba(0,119,255,0.45);
+}
+
+/* ───────────────────────────────────────────────
+   GLOBAL
+───────────────────────────────────────────────── */
+body {
+    font-family: "Poppins", sans-serif;
+    background: var(--light-bg);
+    color: var(--dark-text);
+    scroll-behavior: smooth;
+}
+
+section {
+    padding: 80px 0;
+}
+
+h2.section-title {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* ───────────────────────────────────────────────
+   NAVBAR
+───────────────────────────────────────────────── */
+.navbar {
+    transition: 0.3s;
+}
+.navbar-shadow {
+    box-shadow: 0 4px 18px rgba(0,0,0,.12);
+}
+.navbar .nav-link {
+    font-weight: 500;
+    color: var(--dark-text);
+}
+.navbar .nav-link.active {
+    color: var(--secondary) !important;
+}
+
+/* ───────────────────────────────────────────────
+   HERO
+───────────────────────────────────────────────── */
+#hero {
+    min-height: 100vh;
+    background: var(--gradient);
+    padding-top: 90px;
+    display: flex;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+#hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 0px 3px 12px rgba(0,0,0,0.25);
+}
+
+/* ───────────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────────────── */
+.btn-primary {
+    background: var(--secondary);
+    border: none;
+    font-weight: 600;
+    border-radius: 40px;
+    padding: 12px 28px;
+    transition: 0.25s ease;
+}
+.btn-primary:hover {
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 15px var(--button-glow);
+}
+
+.btn-outline-light {
+    border-radius: 40px;
+    padding: 12px 28px;
+    font-weight: 600;
+}
+
+/* ───────────────────────────────────────────────
+   CARDS
+───────────────────────────────────────────────── */
+.card {
+    border: none;
+    border-radius: 18px;
+    transition: 0.3s;
+    background: white;
+}
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+.card-icon {
+    font-size: 2.2rem;
+    color: var(--secondary);
+}
+
+/* ───────────────────────────────────────────────
+   COUNTER NUMBERS
+───────────────────────────────────────────────── */
+.counter {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+/* ───────────────────────────────────────────────
+   GALLERY IMAGES
+───────────────────────────────────────────────── */
+.gallery-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 14px;
+    transition: 0.3s;
+}
+.gallery-img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ───────────────────────────────────────────────
+   DARK MODE
+───────────────────────────────────────────────── */
+[data-theme="dark"] {
+    --light-bg: #0C1116;
+    --dark-text: #E8FAFF;
+    --gradient: linear-gradient(135deg, #002D6E, #0093AD);
+    color: var(--dark-text);
+    background: var(--light-bg);
+}
+
+[data-theme="dark"] .navbar,
+[data-theme="dark"] footer {
+    background: #0C1116 !important;
+}
+
+[data-theme="dark"] .card {
+    background: #10171D;
+    border: 1px solid #1B262F;
+}
+
+[data-theme="dark"] .btn-primary {
+    background: #0093AD;
+}
+
+[data-theme="dark"] .gallery-img {
+    filter: brightness(0.85);
+}
+
+/* ───────────────────────────────────────────────
+   SCROLLBAR
+───────────────────────────────────────────────── */
+::-webkit-scrollbar {
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 6px;
+}
+
+/* ───────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────────── */
+@keyframes fadeUp {
+    from {opacity:0; transform: translateY(20px);}
+    to {opacity:1; transform: translateY(0);}
+}
+.fade-up {
+    animation: fadeUp 0.9s ease-out forwards;
+}
+/* --- Dark mode fix for "How It Works" (and any bg-light/bg-white sections) --- */
+[data-theme="dark"] #how,
+[data-theme="dark"] section#how,
+[data-theme="dark"] .bg-light,
+[data-theme="dark"] .bg-white {
+  background-color: var(--section-bg) !important;
+  color: var(--section-text) !important;
+}
+
+/* Ensure headings and paragraphs inside stay light in dark mode */
+[data-theme="dark"] #how h2,
+[data-theme="dark"] #how h3,
+[data-theme="dark"] #how h4,
+[data-theme="dark"] #how h5,
+[data-theme="dark"] #how p,
+[data-theme="dark"] #how span {
+  color: var(--section-text) !important;
+}
+
+/* Bootstrap's .text-muted is too dim in dark mode; make it readable */
+[data-theme="dark"] .text-muted {
+  color: var(--text-secondary) !important; /* defined in :root dark */
+}
+
+/* If you have any cards inside "How It Works", make them frosted glass in dark mode */
+[data-theme="dark"] #how .card {
+  background: var(--card-bg) !important;
+  color: var(--card-text) !important;
+  border: 1px solid var(--card-border) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Icons in the steps keep the accent color in dark mode */
+[data-theme="dark"] #how i {
+  color: var(--accent) !important;
+}

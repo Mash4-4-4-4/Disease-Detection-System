@@ -1,0 +1,150 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* Background */
+body {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Login Container */
+.container {
+    background-color: #fff;
+    padding: 50px 60px;
+    border-radius: 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 450px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Header */
+.container h1 {
+    font-size: 40px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+/* Labels */
+.email, .pass, .cpass {
+    display: block;
+    text-align: left;
+    font-size: 18px;
+    font-weight: 600;
+    color: #444;
+    margin: 15px 0 5px 10px;
+}
+
+/* Input Fields */
+input {
+    height: 50px;
+    width: 100%;
+    border-radius: 30px;
+    border: 2px solid transparent;
+    background-color: #f3f3f3;
+    padding-left: 20px;
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 10px rgba(102, 126, 234, 0.4);
+    background-color: #fff;
+}
+
+/* Buttons */
+.btn {
+    height: 50px;
+    width: 100%;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* "OR" divider */
+.or {
+    margin: 20px 0;
+    font-size: 14px;
+    color: #777;
+    position: relative;
+}
+
+.or::before,
+.or::after {
+    content: '';
+    height: 1px;
+    width: 40%;
+    background-color: #ccc;
+    position: absolute;
+    top: 50%;
+}
+
+.or::before { left: 0; }
+.or::after { right: 0; }
+
+/* User Links */
+.user {
+    margin-top: 15px;
+    font-size: 15px;
+    color: #555;
+}
+
+a {
+    text-decoration: none;
+    color: #667eea;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #a579d1;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    .container {
+        padding: 35px 25px;
+        max-width: 90%;
+    }
+
+    .container h1 {
+        font-size: 32px;
+    }
+
+    input {
+        font-size: 15px;
+    }
+
+    .btn {
+        font-size: 16px;
+    }
+}

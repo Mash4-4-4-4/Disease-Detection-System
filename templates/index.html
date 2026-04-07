@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---- your existing styles ---- */
+    .password-wrapper { position: relative; display: flex; align-items: center; }
+    .password-wrapper input[type="password"], .password-wrapper input[type="text"] { width: 100%; padding-right: 2.5rem; }
+    .toggle-visibility {
+      position: absolute; right: 0.6rem; top: 50%; transform: translateY(-50%);
+      cursor: pointer; user-select: none; font-size: 1.1rem;
+    }
+    .inline-msg { margin-top: 0.5rem; }
+    .flash-messages { margin: 1rem 0; }
+    .flash.warning { color: #c58100; }
+    .flash.error { color: #c10000; }
+    .flash.success { color: #0a7a0a; }
+    .btn-link { background: none; border: none; color: #2563eb; cursor: pointer; text-decoration: underline; font-size: 1rem; padding: 0; }
+
+    /* ---- NEW: top-centered fixed flash bar (no Bootstrap needed) ---- */
+    .flash-fixed {
+      position: fixed;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92%, 480px);
+      z-index: 9999;
+    }
+    .flash-fixed .alert {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      text-align: center;
+      font-weight: 500;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+      transition: opacity .4s ease;
+    }
+    .alert-success { background: #d4ffe1; color: #056600; }
+    .alert-warning { background: #fff4c2; color: #8a6d00; }
+    .alert-error, .alert-danger { background: #ffd4d4; color: #7c0000; }
+  </style>
+</head>
+<body>
+
+  <!-- ✅ FLASH MESSAGES (must be inside <body>, at the very top) -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-fixed" id="flashBox">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="container">
+    <!-- LOGIN ONLY -->
+    <form action="{{ url_for('login') }}" method="POST" class="form">
+      <div class="email">
+        <input type="email" name="email" id="mail" placeholder="Email" required>
+      </div>
+      <div class="pass password-wrapper">
+        <input type="password" name="password" id="pass1" placeholder="Password" minlength="8" required>
+        <span class="toggle-visibility" data-target="pass1" aria-label="Show password" title="Show/Hide">👁️</span>
+      </div>
+      <div>
+        <button class="btn" type="submit">Login</button>
+      </div>
+      <p class="inline-msg">New user? <a href="{{ url_for('register_page') }}">Register here</a></p>
+    </form>
+  </div>
+
+  <script>
+    // Eye icon toggles for password fields
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('toggle-visibility')) {
+        const id = e.target.getAttribute('data-target');
+        const input = document.getElementById(id);
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    });
+
+    // Auto-hide flash after 3s
+    (function(){
+      const box = document.getElementById('flashBox');
+      if (!box) return;
+      setTimeout(() => {
+        box.style.opacity = '0';
+        setTimeout(() => box.remove(), 400);
+      }, 3000);
+    })();
+  </script>
+
+</body>
+</html>
